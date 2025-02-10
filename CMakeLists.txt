@@ -45,8 +45,7 @@ pico_enable_stdio_uart(control-servomotor-pwm 0)
 pico_enable_stdio_usb(control-servomotor-pwm 1)
 
 # Add the standard library to the build
-target_link_libraries(control-servomotor-pwm
-        pico_stdlib)
+target_link_libraries(control-servomotor-pwm pico_stdlib hardware_pwm)
 
 # Add the standard include files to the build
 target_include_directories(control-servomotor-pwm PRIVATE
@@ -55,7 +54,7 @@ target_include_directories(control-servomotor-pwm PRIVATE
 
 # Add any user requested libraries
 target_link_libraries(control-servomotor-pwm 
-        
+    
         )
 
 pico_add_extra_outputs(control-servomotor-pwm)
