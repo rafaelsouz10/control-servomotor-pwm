@@ -4,23 +4,30 @@
 
 #define SERVO_PIN 22 
 
+int angles[3] = {180, 90, 0}; //vetor com os ângulos a serem rodados no servomotor 180 graus, 90 graus e 0 graus
+uint16_t duty_cycle; //variável para ser salvo a cada ciclo de trabalho utilizado
+
 // Função para configurar o ângulo do servomotor
-void set_servo_angle(uint slice_num, uint angle) {
-    uint16_t duty_cycle;
-    if (angle == 0) {
-        // 0 graus -> 500μs, com período de 20ms -> Duty Cycle = 500 / 20000 = 0.025% 
-        duty_cycle = 500;  // Cálculo para 0 graus
-        printf("Servo movido para 0 graus\n");
-    } else if (angle == 90) {
-        // 90 graus -> 1470μs, com período de 20ms -> Duty Cycle = 1470 / 20000 = 0.0735% 
-        duty_cycle = 1470; // Cálculo para 90 graus
-        printf("Servo movido para 90 graus\n");
-    } else if (angle == 180) {
-        // 180 graus -> 2400μs, com período de 20ms -> Duty Cycle = 2400 / 20000 = 0.12% 
-        duty_cycle = 2400; // Cálculo para 180 graus
-        printf("Servo movido para 180 graus\n");
+void set_servo_angle(uint slice_num) {
+    
+    for (int i = 0; i < 3; i++){    //roda cada clico do vetor angles
+        angles[i];
+        if (angles[i] == 0) {
+            // 0 graus -> 500μs, com período de 20ms -> Duty Cycle = 500 / 20000 = 0.025% 
+            duty_cycle = 500;  // Cálculo para 0 graus
+            printf("Servo movido para 0 graus\n");
+        } else if (angles[i] == 90) {
+            // 90 graus -> 1470μs, com período de 20ms -> Duty Cycle = 1470 / 20000 = 0.0735% 
+            duty_cycle = 1470; // Cálculo para 90 graus
+            printf("Servo movido para 90 graus\n");
+        } else if (angles[i] == 180) {
+            // 180 graus -> 2400μs, com período de 20ms -> Duty Cycle = 2400 / 20000 = 0.12% 
+            duty_cycle = 2400; // Cálculo para 180 graus
+            printf("Servo movido para 180 graus\n");
+        }
+        pwm_set_chan_level(slice_num, PWM_CHAN_A, duty_cycle); //configura o canal pwm para cada ciclo de trabalho referente ao angulo
+        sleep_ms(5000); //espera 5s para cada ciclo rodado do for
     }
-    pwm_set_chan_level(slice_num, PWM_CHAN_A, duty_cycle);
 }
 
 int main() {
@@ -35,22 +42,12 @@ int main() {
     pwm_set_wrap(slice_num, 20000);    // Período de 20 ms (equivalente a 50 Hz)
     pwm_set_enabled(slice_num, true);  // Habilita o PWM como true
 
-    // Move o servomotor para 180 graus e espera 5 segundos
-    set_servo_angle(slice_num, 180);
-    sleep_ms(5000);
-
-    // Move o servomotor para 90 graus e espera 5 segundos
-    set_servo_angle(slice_num, 90);
-    sleep_ms(5000);
-
-    // Move o servomotor para 0 graus e espera 5 segundos
-    set_servo_angle(slice_num, 0);
-    sleep_ms(5000);
+    // Move o servomotor de 180 graus por 5s, 90 graus por 5s 0 grau por 5s
+    set_servo_angle(slice_num);
 
     // Inicia a movimentação suave do servomotor entre 0 e 180 graus
-    uint16_t duty_cycle = 500;  // Começa em 0 graus (500μs)
-    while (true) {
-        
+    duty_cycle = 500;  // Começa em 0 graus (500μs)
+    while (true) { 
         // Move de 0 a 180 graus
         while (duty_cycle <= 2400) {
             pwm_set_chan_level(slice_num, PWM_CHAN_A, duty_cycle);
