@@ -6,6 +6,19 @@
 
 int angles[3] = {180, 90, 0}; //vetor com os ângulos a serem rodados no servomotor 180 graus, 90 graus e 0 graus
 uint16_t duty_cycle; //variável para ser salvo a cada ciclo de trabalho utilizado
+uint slice_num; //Variável para o slice associado ao pino do servomotor
+
+//Função para Inicializa as configurações pra o PWM
+void pwm_setup(){
+    // Configura o GPIO 22 (servoPin) como PWM
+    gpio_set_function(SERVO_PIN, GPIO_FUNC_PWM);
+    slice_num = pwm_gpio_to_slice_num(SERVO_PIN);
+
+    // Configura a frequência do PWM para 50 Hz
+    pwm_set_clkdiv(slice_num, 125.0f); // (125MHz / (20ms * 20000) = 50 Hz)
+    pwm_set_wrap(slice_num, 20000);    // Período de 20 ms (equivalente a 50 Hz)
+    pwm_set_enabled(slice_num, true);  // Habilita o PWM como true
+}
 
 // Função para configurar o ângulo do servomotor
 void set_servo_angle(uint slice_num) {
@@ -31,15 +44,7 @@ void set_servo_angle(uint slice_num) {
 
 int main() {
     stdio_init_all();  // Inicializa a comunicação serial para printf
-
-    // Configura o GPIO 22 (servoPin) como PWM
-    gpio_set_function(SERVO_PIN, GPIO_FUNC_PWM);
-    uint slice_num = pwm_gpio_to_slice_num(SERVO_PIN);
-
-    // Configura a frequência do PWM para 50 Hz
-    pwm_set_clkdiv(slice_num, 125.0f); // (125MHz / (20ms * 20000) = 50 Hz)
-    pwm_set_wrap(slice_num, 20000);    // Período de 20 ms (equivalente a 50 Hz)
-    pwm_set_enabled(slice_num, true);  // Habilita o PWM como true
+    pwm_setup();    //Inicializa as configurações pra o PWM
 
     // Move o servomotor de 180 graus por 5s, 90 graus por 5s 0 grau por 5s
     set_servo_angle(slice_num);
@@ -63,6 +68,5 @@ int main() {
         }
         printf("Servo movido de 180 para 0 graus\n");
     }
-
     return 0;
 }
