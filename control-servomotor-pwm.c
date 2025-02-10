@@ -14,15 +14,15 @@ void set_servo_angle(uint slice_num) {
         angles[i];
         if (angles[i] == 0) {
             // 0 graus -> 500μs, com período de 20ms -> Duty Cycle = 500 / 20000 = 0.025% 
-            duty_cycle = 500;  // Cálculo para 0 graus
+            duty_cycle = 500;  // ciclo de trabalo para 0 graus
             printf("Servo movido para 0 graus\n");
         } else if (angles[i] == 90) {
             // 90 graus -> 1470μs, com período de 20ms -> Duty Cycle = 1470 / 20000 = 0.0735% 
-            duty_cycle = 1470; // Cálculo para 90 graus
+            duty_cycle = 1470; // ciclo de trabalo para 90 graus
             printf("Servo movido para 90 graus\n");
         } else if (angles[i] == 180) {
             // 180 graus -> 2400μs, com período de 20ms -> Duty Cycle = 2400 / 20000 = 0.12% 
-            duty_cycle = 2400; // Cálculo para 180 graus
+            duty_cycle = 2400; // ciclo de trabalo para 180 graus
             printf("Servo movido para 180 graus\n");
         }
         pwm_set_chan_level(slice_num, PWM_CHAN_A, duty_cycle); //configura o canal pwm para cada ciclo de trabalho referente ao angulo
@@ -50,7 +50,7 @@ int main() {
     while (true) { 
         // Move de 0 a 180 graus
         while (duty_cycle <= 2400) {
-            pwm_set_chan_level(slice_num, PWM_CHAN_A, duty_cycle);
+            pwm_set_chan_level(slice_num, PWM_CHAN_A, duty_cycle); //canal pwm será incrementado +5μs o duty cycle até chegar a 2400μs (180 graus)
             duty_cycle += 5;  // Incrementa o ciclo ativo em 5μs
             sleep_ms(10);     // Pausa de 10ms entre os ajustes
         }
@@ -58,7 +58,7 @@ int main() {
 
         // Move de 180 a 0 graus
         while (duty_cycle >= 500) {
-            pwm_set_chan_level(slice_num, PWM_CHAN_A, duty_cycle);
+            pwm_set_chan_level(slice_num, PWM_CHAN_A, duty_cycle); //canal pwm será decrementado +5μs o duty cycle até chegar a 500μs (0 graus)
             duty_cycle -= 5;  // Decrementa o ciclo ativo em 5μs
             sleep_ms(10);     // Pausa de 10ms entre os ajustes
         }
