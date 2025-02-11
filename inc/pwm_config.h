@@ -43,5 +43,4 @@ void set_servo_angle() {
     }
 }
 
-
 #endif

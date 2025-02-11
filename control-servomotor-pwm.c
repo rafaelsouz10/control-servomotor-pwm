@@ -1,5 +1,5 @@
-#include "pico/stdlib.h"
 #include <stdio.h>
+#include "pico/stdlib.h"
 #include <inc/pwm_config.h>
 
 int main() {
