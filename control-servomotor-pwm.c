@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include <inc/pwm_config.h>
+#include <inc/pwm_config.h> //Biblioteca com toda configuração relacionada ao servomotor pwm
 
 int main() {
     stdio_init_all();  // Inicializa a comunicação serial para printf
     pwm_setup();    //Inicializa as configurações pra o PWM
 
     // Move o servomotor de 180 graus por 5s, 90 graus por 5s 0 grau por 5s
-    set_servo_angle(); //slice_num definido em pwm_setup()
+    set_servo_angle();
 
     // Inicia a movimentação suave do servomotor entre 0 e 180 graus
     duty_cycle = 500;  // Começa em 0 graus (500μs)
