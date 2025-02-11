@@ -134,4 +134,4 @@ Mensagens são exibidas no **terminal** (`printf()`) informando as mudanças de 
 
 ### 8. Vídeo Demonstrativo
 
-Click [AQUI](link do vídeo será adicionado aqui) para acessar o link do Vídeo Ensaio
+Click [AQUI](https://drive.google.com/file/d/1EcFzGqHcQVa54JidrvR_63xwFbsR92mS/view?usp=sharing) para acessar o link do Vídeo Ensaio
